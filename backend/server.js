@@ -149,6 +149,7 @@ const syncRecentMessages = async (sessionId, client, userId) => {
 
             // Determinar número/identificador do contato
             const contactNumber = contact ? contact.number : (chat.id && (chat.id.user || (chat.id._serialized || '').split('@')[0])) || null;
+            let contactDataToEmit = null;
 
             if (contactNumber) {
               const contactData = {
@@ -160,6 +161,7 @@ const syncRecentMessages = async (sessionId, client, userId) => {
                 is_group: !!chatIsGroup
               };
               try { await Contact.upsert(contactData); } catch (e) { console.error('[sync] upsert contato falhou:', e?.message || e); }
+              contactDataToEmit = contactData;
             }
 
             const fromRaw = (m.from || '').split('@')[0];
@@ -203,7 +205,14 @@ const syncRecentMessages = async (sessionId, client, userId) => {
               totalPersisted++;
               // emitir opcionalmente para o frontend
               if (userId) {
-                io.to(userId).emit('message', saved);
+                const messageWithDetails = {
+                  ...saved,
+                  contact: contactDataToEmit || undefined,
+                  chat: {
+                    name: chat.name || chat.formattedTitle
+                  }
+                };
+                io.to(userId).emit('message', messageWithDetails);
               }
             } catch (dbErr) {
               if (!(dbErr && (dbErr.code === '23505' || (dbErr.message || '').toLowerCase().includes('duplicate')))) {

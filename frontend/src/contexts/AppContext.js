@@ -84,6 +84,8 @@ export const AppProvider = ({ children }) => {
         if (sid) {
           const sessionMessages = await getMessages(sid, 1000);
           setMessages(prev => ({ ...prev, [sid]: sessionMessages }));
+          // Também atualizar contatos após o backend sincronizar e fazer upsert
+          await loadContacts(sid);
         }
       } catch (e) {
         console.error('Falha ao carregar histórico após ready:', e);
