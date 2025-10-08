@@ -1,0 +1,100 @@
+/* Reset CSS */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  background-color: #f5f5f5;
+}
+
+/* Estilos para a barra lateral */
+.sidebar-transition {
+  transition: width 0.3s ease;
+}
+
+/* Estilos para o conteúdo principal */
+.main-content {
+  flex-grow: 1;
+  overflow: auto;
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+/* Estilos para o chat */
+.message-bubble {
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.message-sent {
+  background-color: #dcf8c6;
+  align-self: flex-end;
+}
+
+.message-received {
+  background-color: #ffffff;
+  align-self: flex-start;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Indicador de digitação */
+.typing-indicator {
+  display: inline-block;
+  position: relative;
+  width: 30px;
+  height: 10px;
+}
+
+.typing-indicator::before {
+  content: '';
+  position: absolute;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background-color: #888;
+  left: 0;
+  animation: typing 1s infinite;
+}
+
+.typing-indicator::after {
+  content: '';
+  position: absolute;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background-color: #888;
+  left: 12px;
+  animation: typing 1s infinite 0.3s;
+}
+
+.typing-indicator span {
+  position: absolute;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background-color: #888;
+  left: 24px;
+  animation: typing 1s infinite 0.6s;
+}
+
+@keyframes typing {
+  0% { opacity: 0.4; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-4px); }
+  100% { opacity: 0.4; transform: translateY(0); }
+}
